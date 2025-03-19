@@ -28,5 +28,22 @@ client.on('messageCreate', (message) => {
     }
 });
 
+client.on('ready', (c) => {
+    console.log(`${c.user.tag} is now online!`);
+});
+
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+    
+    if (interaction.commandName === "hello") {
+        interaction.reply("Hey there!");
+    }
+
+    if (interaction.commandName === "ping") {
+        interaction.reply("Pong!");
+    }
+
+});
+
 // Login to Discord
 client.login(process.env.DISCORD_TOKEN);
