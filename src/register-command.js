@@ -15,6 +15,42 @@ const commands = [
         description: 'Responds with Pong!',
     },
     {
+        name: 'whoisganji', // Command name must be lowercase
+        description: 'Who is Ganji?',
+    },
+    {
+        name: 'remindme',
+        description: 'Remind me to do something',
+        options: [
+            {
+                name: 'message',
+                description: 'What do you want to be reminded of?',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: 'time',
+                description: 'When do you want to be reminded?',
+                type: ApplicationCommandOptionType.Number,
+                required: true,
+            },
+            {
+                name: 'unit',
+                description: 'Unit of time',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+                choices: [
+                    { name: 'seconds', value: 'seconds' },
+                    { name: 'minutes', value: 'minutes' },
+                    { name: 'hours', value: 'hours' },
+                    { name: 'days', value: 'days' },
+                    { name: 'weeks', value: 'weeks' },
+                    { name: 'months', value: 'months' },
+                ],
+            },
+        ],
+    },
+    {
         name: 'add',
         description: 'Adds two numbers together',
         options: [
@@ -22,13 +58,13 @@ const commands = [
                 name: 'num1',
                 description: 'First number',
                 type: ApplicationCommandOptionType.Number,
-                required: true, // Ensure this option is required
+                required: true,
             },
             {
                 name: 'num2',
                 description: 'Second number',
                 type: ApplicationCommandOptionType.Number,
-                required: true, // Ensure this option is required
+                required: true,
             },
         ],
     },

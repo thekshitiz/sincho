@@ -38,11 +38,15 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.commandName === 'hello') {
         interaction.reply('Hey there!')
     }
+    
 
     if (interaction.commandName === 'ping') {
         interaction.reply('Pong!')
     }
+    if (interaction.commandName === 'whoisganji') {
+        interaction.reply('Ganji is my Mother. I am one of her three dogs. I am 3 days old.')
 
+    }
     if (interaction.commandName === 'add') {
         const num1 = interaction.options.getNumber('num1')
         const num2 = interaction.options.getNumber('num2')
