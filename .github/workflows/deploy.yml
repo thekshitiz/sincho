@@ -13,8 +13,13 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
+            - name: Install Railway CLI
+              run: npm install -g @railway/cli
+
             - name: Deploy to Railway
-              uses: railwayapp/railway-docker-deploy@v2.1.0
               env:
                   RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-                  DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+              run: |
+                  railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+                  railway variables set DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+                  railway up
