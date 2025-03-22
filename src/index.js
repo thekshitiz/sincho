@@ -3,6 +3,9 @@ const { Client, GatewayIntentBits } = require('discord.js')
 
 // Debug logging for environment variables
 console.log('Environment check:')
+console.log('NODE_ENV:', process.env.NODE_ENV)
+console.log('PWD:', process.env.PWD)
+console.log('All environment variables:', Object.keys(process.env))
 console.log('DISCORD_TOKEN exists:', !!process.env.DISCORD_TOKEN)
 console.log(
     'DISCORD_TOKEN length:',
@@ -128,6 +131,10 @@ client.on('interactionCreate', async (interaction) => {
         setTimeout(() => {
             interaction.followUp(`Reminder: ${message}`)
         }, timeInMs)
+    }
+    if (interaction.commandName === 'hot') {
+        const result = Math.random() < 0.5 ? 'heads' : 'tails'
+        interaction.reply(`The coin landed on ${result}!`)
     }
 })
 

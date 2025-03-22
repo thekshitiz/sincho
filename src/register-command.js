@@ -4,11 +4,36 @@ require('dotenv').config()
 // Import necessary classes from discord.js
 const { REST, Routes, ApplicationCommandOptionType } = require('discord.js')
 
+// Validate required environment variables
+const requiredEnvVars = ['DISCORD_TOKEN', 'CLIENT_ID', 'GUILD_ID']
+const missingEnvVars = requiredEnvVars.filter(
+    (varName) => !process.env[varName]
+)
+
+if (missingEnvVars.length > 0) {
+    console.error(
+        'Error: Missing required environment variables:',
+        missingEnvVars.join(', ')
+    )
+    console.error('Please make sure these variables are set in your .env file')
+    process.exit(1)
+}
+
+// Debug logging
+console.log('Environment check:')
+console.log('CLIENT_ID exists:', !!process.env.CLIENT_ID)
+console.log('GUILD_ID exists:', !!process.env.GUILD_ID)
+console.log('DISCORD_TOKEN exists:', !!process.env.DISCORD_TOKEN)
+
 // Define the slash commands to be registered
 const commands = [
     {
         name: 'hello',
         description: 'Responds with a friendly hello',
+    },
+    {
+        name: 'hot',
+        description: 'Flip a coin and get heads or tails',
     },
     {
         name: 'ping',
@@ -99,18 +124,27 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 ;(async () => {
     try {
         console.log('Registering slash (/) commands.')
+        console.log(`Application ID: ${process.env.CLIENT_ID}`)
+        console.log(`Guild ID: ${process.env.GUILD_ID}`)
 
         // Use the REST API to register the commands
-        await rest.put(
-            Routes.applicationCommands(
-                process.env.CLIENT_ID,
-                process.env.GUILD_ID
-            ),
-            { body: commands }
-        )
+        await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+            body: commands,
+        })
 
         console.log('Successfully registered slash (/) commands.')
     } catch (error) {
-        console.error(error)
+        if (error.status === 401) {
+            console.error(
+                'Error: Invalid Discord token. Please check your DISCORD_TOKEN in .env'
+            )
+        } else if (error.status === 403) {
+            console.error(
+                "Error: Bot lacks permissions. Please check bot permissions and ensure it's added to the server"
+            )
+        } else {
+            console.error('Error registering commands:', error)
+        }
+        process.exit(1)
     }
 })()
