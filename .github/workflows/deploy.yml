@@ -1,32 +1,22 @@
-name: Deploy
-name: Deploy to Server
+name: Deploy to Railway
 
 on:
-  push:
-    branches:
-      - main  # Adjust if you use a different default branch
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'  # Specify your Node.js version
+            - name: Install Railway CLI
+              run: npm install -g @railway/cli
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install PM2
-        run: npm install pm2 -g
-
-      - name: Start bot with PM2
-        run: |
-          pm2 start ecosystem.config.js
-          pm2 save
-          pm2 startup
+            - name: Deploy to Railway
+              env:
+                  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+              run: railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }}

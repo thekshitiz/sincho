@@ -8,5 +8,16 @@ module.exports = {
             watch: false,
             max_memory_restart: '200M',
         },
+        {
+            name: 'discord-ai-bot',
+            script: 'index.js',
+            watch: true,
+            env: {
+                NODE_ENV: 'development',
+            },
+            env_production: {
+                NODE_ENV: 'production',
+            },
+        },
     ],
 }
