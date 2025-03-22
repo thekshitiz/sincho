@@ -17,3 +17,4 @@ jobs:
               uses: railwayapp/railway-docker-deploy@v2.1.0
               env:
                   RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+                  DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
